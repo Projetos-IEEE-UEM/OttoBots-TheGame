@@ -1,0 +1,8 @@
+*.yyz
+*.temp
+*.bak
+config.ini
+macros.json
+/options/main/inherited/
+/cache/
+/export/

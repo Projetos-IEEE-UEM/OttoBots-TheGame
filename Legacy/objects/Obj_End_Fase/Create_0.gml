@@ -1,0 +1,1 @@
+global.dialogo_completo = false;

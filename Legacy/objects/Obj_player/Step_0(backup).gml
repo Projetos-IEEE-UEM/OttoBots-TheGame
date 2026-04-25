@@ -1,0 +1,291 @@
+//Etapa fica rodando no o codigo toda hr enquanto o objeto existir
+
+#region MOVIMENTAÇÃO E COLISAO
+
+//So se movimenta enquanto nao estiver levando dano 
+if dano == false && estado!="morto" {
+		//esquerda (move=-1) e direita (move=0). Os dois apertados juntos (move=0)
+		move = -keyboard_check(ord("A"))+keyboard_check(ord("D"))
+		direcao = move;
+		xspd = velocidade_movimento*move
+	}
+	
+	/*Aqui é onde vou tentar implementar a movimentação do Otto enquanto ele anda pelo gelo. Vamos ver
+	no que vai dar. Qulquer coisa, só apagar esse if aqui em baixo! ~Bruno
+	
+	if (place_meeting(x, y+1, Obj_block_gelo)){
+		direcao = -keyboard_check(ord("A"))+keyboard_check(ord("D"));
+		if (direcao != 0){
+			teste += direcao*aceleracao_gelo;
+		}
+		else{
+			teste = lerp(teste, 0, 0.01)
+		}
+		teste = clamp(teste, -1, 1)
+		xspd = velocidade_movimento*teste
+	}
+	*/
+	
+
+//Movimentação horizontal
+//xspd = velocidade_movimento*move
+
+//Direção do personagem (se ele esta virado para esquerda ou direita)
+if (move != 0) image_xscale = direcao
+
+//se a tecla S estiver apertada o Otto agaixa
+if keyboard_check(ord("S")) {
+	agachar = true
+}
+
+//Se nao tiver nenhum bloco em cima do player e a tecla nao estiver pressionada, ele levanta
+if !place_meeting(x, y-5, Obj_block) && !keyboard_check(ord("S")) {
+	agachar = false
+}
+
+if agachar && keyboard_check(ord("S")) {
+	vel_pulo = -5
+} else {
+	vel_pulo = -7
+}
+		
+
+if place_meeting(x, y+1, Obj_block) {
+	pulos = 2
+}
+else{
+	vel_movimento_vertical+=grav
+}
+
+//So consigo pular quando o timer de dano acabar e eu nao estar mais no estado de dano.
+if(dano == false){
+	//funcionamento do pulo
+	if keyboard_check_pressed(vk_space) && pulos > 0{
+		vel_movimento_vertical = vel_pulo
+		pulos -= 1
+	}
+}
+
+#endregion
+
+#region MAQUINA DE ESTADOS
+
+jump = keyboard_check_pressed(vk_space)
+
+switch(estado){
+	case "parado":{
+		//comportamento do estado
+		sprite_index = Spr_player
+		
+		//se a tecla S estiver apertada o Otto agaixa
+		if agachar {
+			sprite_index = Spr_player_abaixa
+		}
+		//condicao de movimento 
+		if move != 0 {
+			estado = "movendo";
+		}
+		else if jump {
+			estado = "pulando";
+		}
+		
+		break
+	}
+	case "movendo":{
+		//comportamento
+		sprite_index = Spr_player_walk
+
+		//se a tecla S estiver apertada o Otto agaixa
+		if agachar {
+			sprite_index = Spr_player_abaixa
+		}
+		
+		//condicao de estar parado
+		if move == 0 {
+			estado = "parado";
+		}
+		else if jump {
+			estado = "pulando";
+		}
+		else if vel_movimento_vertical > 0 {
+			estado = "caindo"
+		}
+		
+		break;
+	}
+	case "pulando":{
+		if agachar {
+			sprite_index = Spr_player_abaixa
+		}
+		//comportamento
+		//condiçao para para a animaçao no ar
+		if vel_movimento_vertical < 0 && !keyboard_check(ord("S")) {
+			sprite_index = Spr_player_jump;
+			//condiçao para o sprite nao ficar se repetindo e ficar parado no ultimo frame
+			if image_index >= image_number - 1 {
+			image_index = image_number-1;
+			}
+		}
+		else{
+			estado = "caindo"
+		}
+		break
+	}
+	case "caindo" :{
+		
+		//recebe o sprite de queda
+		sprite_index = Spr_player_fall;
+		
+		if agachar {
+			sprite_index = Spr_player_abaixa
+		}
+			
+		//Se eu estou caindo, quer dizer que posso cair na cabeça de um inimigo
+		//criando uma variavel para checar se tem um inimigo abaixo de mim
+		var _inimigo = instance_place(x, y+1, Obj_inimigo_pai);
+			
+		//checando se eu cai em um inimigo, so funciona se eu nao estiver travado de dano
+		if _inimigo && dano == false  {
+			//So consigo pular na cabeça do inimigo se ele nao estiver morto e nao tiver levado dano
+			if _inimigo.morto == false && _inimigo.dano == false {
+				
+				//dando o aviso pro inimigo que ele tomou dano do player 
+				_inimigo.dano = true;
+				//eu sou lancado no ar novamente -bouncing-
+				vel_movimento_vertical = vel_pulo+2;
+				estado = "pulando"
+			}  		
+		}
+		//condição de fim de pulo
+		if vel_movimento_vertical == 0 {
+			estado = "parado"
+		}
+		break
+	}
+	case "morto":{
+		
+		sprite_index = Spr_player_dead;
+		
+		if image_index >= image_number - 1 {
+			image_alpha-=0.05;
+		}
+
+		show_debug_message("estou no estado morto");
+		//estado = "parado"
+		
+		break;
+	}
+}
+#endregion
+
+//Quando zerado o tempo levando dano, inicia o tempo de ficar invisivel
+if timer_dano == 0 {
+	//Timer do dano acabou, entao eu nao preciso mais estar levando dano
+	dano = false;
+}
+
+//Quando o tempo de invecibilidade terminar, a imagem do player volta a ficar opaca
+if timer_invencivel > 0 {
+	timer_invencivel--;
+}else{
+	if estado != "morto"{
+		image_alpha = 1;
+	}
+}
+
+
+//Enquanto o tempo do dano ainda nao zerou
+if dano {
+	
+	//sprite muda para o player tomando dano 
+	sprite_index = Spr_player_hit;
+	
+	//So ativa a invencibilidade se eu nao estiver morto e levar dano
+	if estado != "morto" {
+		if timer_dano == 1 {
+			//Inicio da contagem da invecibilidade e player fica menos opaco para indicar que esta invencivel
+			timer_invencivel = tempo_invencivel;
+			image_alpha = 0.5;
+		}
+	}	
+	
+	//diminiu o timer de dano
+	timer_dano--;
+	
+	//isso serve para diminuir a distancia do empurrao que o player levou do inimigo
+	if timer_dano < tempo_dano - 25 {
+		move = 0;
+	}
+	
+	//diminui a quantidade de vidas do Otto quando levar dano de fato
+	if posso_dano {
+		global.vida--;
+		posso_dano = false;
+	}
+	
+	//Quando suas vidas chegarem a zero, seu estado muda para morto
+	if global.vida == 0{
+		estado = "morto"
+		sprite_index = Spr_player_dead;
+	}
+
+}
+
+//Checando se eu encostei num inimigo, projétil ou bloco para tomar dano dele
+var _inimigo = instance_place(x, y, Obj_inimigo_pai);
+var _projetil = instance_place(x,y, Obj_projetil_pai);
+var _bloco_dano = instance_place(x+direcao,y+1, Obj_block_dano);
+
+//So toma dano qunado nao esta morto
+if estado!="morto"{
+	//Player so toma dano quando a invencibilidade acabar e o inimigo nao estiver morto
+	if timer_invencivel == 0 {
+		if _inimigo && dano == false{
+			if _inimigo.dano == false && _inimigo.morto == false{
+				dano = true;
+				
+				//Aqui eu digo para minha variavel de controle q eu posso levar dano
+				posso_dano = true;
+
+				//inicia o timer de dano
+				timer_dano = tempo_dano;
+
+				//quando o player leva dano, ele eh empurrado para tras na direcao oposta de seu movimento
+				vel_movimento_vertical = -4;
+				move = -move;
+			}
+		}
+		/*Adiocionei aqui a parte do projétil: é basicamente a mesma coisa que acontece quando ele toca em em um
+		inimigo pela lateral, mas de todos os ângulos! ~Bruno*/
+		if _projetil && dano==false//Se eu toco em um projétil e eu não estou invencível:
+		{
+			dano = true; //Eu levo dano.
+				
+			//Aqui eu digo para minha variavel de controle q eu posso levar dano
+			posso_dano = true;
+
+			//inicia o timer de dano
+			timer_dano = tempo_dano;
+
+			//quando o player leva dano, ele eh empurrado para tras na direcao oposta de seu movimento
+			vel_movimento_vertical = -4;
+			move = -move;
+		}
+		if _bloco_dano && dano==false//Se eu toco em um projétil e eu não estou invencível:
+		{
+			dano = true; //Eu levo dano.
+				
+			//Aqui eu digo para minha variavel de controle q eu posso levar dano
+			posso_dano = true;
+
+			//inicia o timer de dano
+			timer_dano = tempo_dano;
+
+			//quando o player leva dano, ele eh empurrado para tras na direcao oposta de seu movimento
+			vel_movimento_vertical = -4;
+			move = -move;
+		}
+	}
+}
+
+

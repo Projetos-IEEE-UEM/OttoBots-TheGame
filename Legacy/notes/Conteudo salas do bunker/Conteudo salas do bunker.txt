@@ -1,0 +1,5 @@
+Bunker_1 = Igor vai explicar as movimentacoes pro payer
+Bunker_2 = Rubao vai explicar sobre os coletaveis (moedas e vida)
+Bunker_3 = Lucas explica sobre o primeiro inimigo(vyper)
+Bunker_4 = Lucas explica sobre o segundo inimigo
+Bunker_5 = Lucas explica sobre o ultimo inimigo
