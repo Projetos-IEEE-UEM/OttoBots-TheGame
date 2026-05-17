@@ -383,3 +383,19 @@ if contador_de_debouncing > 0 {
 	contador_de_debouncing--;
 }
 #endregion
+
+
+// Mecanica do vento
+
+_inst = Obj_Tempestade;
+
+if(instance_exists(_inst)) {
+    var _tempestade = _inst.tempestade_ativa;
+    
+    if (!agachar) {
+        xspd -= _inst.forca_tempestade * 0.8;
+        
+        velocidade_movimento = lerp(4,2,_inst.forca_tempestade);
+    }
+}
+
