@@ -1,4 +1,4 @@
-if (tempestade_ativa) {
+if (forca_tempestade > 0.005) {
     draw_set_alpha(forca_tempestade * 0.2); 
     draw_set_colour(c_navy);
     draw_rectangle(camera_get_view_x(view_camera[0]), camera_get_view_y(view_camera[0]), 
