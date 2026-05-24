@@ -163,6 +163,7 @@
     {"id":{"name":"Spr_moedasome","path":"sprites/Spr_moedasome/Spr_moedasome.yy",},},
     {"id":{"name":"Spr_Next_Level","path":"sprites/Spr_Next_Level/Spr_Next_Level.yy",},},
     {"id":{"name":"Spr_nuvens","path":"sprites/Spr_nuvens/Spr_nuvens.yy",},},
+    {"id":{"name":"Spr_O27","path":"sprites/Spr_O27/Spr_O27.yy",},},
     {"id":{"name":"Spr_player_abaixa","path":"sprites/Spr_player_abaixa/Spr_player_abaixa.yy",},},
     {"id":{"name":"Spr_player_dead","path":"sprites/Spr_player_dead/Spr_player_dead.yy",},},
     {"id":{"name":"Spr_player_fall","path":"sprites/Spr_player_fall/Spr_player_fall.yy",},},
