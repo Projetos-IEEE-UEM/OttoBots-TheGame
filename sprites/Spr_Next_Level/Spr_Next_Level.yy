@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":7,
   "parent":{
-    "name":"Cenario",
-    "path":"folders/Sprites/Cenario.yy",
+    "name":"Cenario_Bunker",
+    "path":"folders/Sprites/Cenario/Cenario_Lab/Cenario_Bunker.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

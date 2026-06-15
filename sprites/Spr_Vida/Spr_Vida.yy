@@ -31,7 +31,7 @@
   ],
   "name":"Spr_Vida",
   "nineSlice":null,
-  "origin":7,
+  "origin":1,
   "parent":{
     "name":"Coletáveis",
     "path":"folders/Sprites/Coletáveis.yy",
@@ -104,7 +104,7 @@
     "visibleRange":null,
     "volume":1.0,
     "xorigin":8,
-    "yorigin":20,
+    "yorigin":0,
   },
   "swatchColours":null,
   "swfPrecision":2.525,
@@ -114,5 +114,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":17,
+  "width":16,
 }

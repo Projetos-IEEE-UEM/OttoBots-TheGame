@@ -202,7 +202,7 @@ switch(estado){
 		sprite_index = Spr_player_dead;
 		
 		if image_index >= image_number - 1 {
-			image_alpha-=0.05;
+			image_alpha -= 0.05;
 		}
 
 		show_debug_message("estou no estado morto");
@@ -398,4 +398,3 @@ if(instance_exists(_inst)) {
         velocidade_movimento = lerp(4,2,_inst.forca_tempestade);
     }
 }
-
