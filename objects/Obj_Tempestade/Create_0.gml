@@ -6,6 +6,3 @@ intervalo_tempestade = 420;    // Tempo de intervalo entre as tempestades (15s)
 
 alarm[0] = intervalo_tempestade;
 
-
-_player = Obj_player;
-particula_chuva = part_system_create(chuva);
