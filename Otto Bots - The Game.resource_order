@@ -50,11 +50,7 @@
     {"name":"Obj_ProvaDeFogo","order":3,"path":"objects/Obj_ProvaDeFogo/Obj_ProvaDeFogo.yy",},
     {"name":"Obj_resenha","order":3,"path":"objects/Obj_resenha/Obj_resenha.yy",},
     {"name":"Obj_Rubens","order":1,"path":"objects/Obj_Rubens/Obj_Rubens.yy",},
-<<<<<<< HEAD
-    {"name":"Obj_Tempestade","order":1,"path":"objects/Obj_Tempestade/Obj_Tempestade.yy",},
-=======
     {"name":"Obj_Tempestade","order":10,"path":"objects/Obj_Tempestade/Obj_Tempestade.yy",},
->>>>>>> aee9802620437a3c9eadab74378b7b5e5fc857c7
     {"name":"obj_title_menu","order":1,"path":"objects/obj_title_menu/obj_title_menu.yy",},
     {"name":"Obj_Vida_Coletada","order":1,"path":"objects/Obj_Vida_Coletada/Obj_Vida_Coletada.yy",},
     {"name":"Bunker_2","order":1,"path":"rooms/Bunker_2/Bunker_2.yy",},
