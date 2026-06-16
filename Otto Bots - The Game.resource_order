@@ -58,8 +58,6 @@
     {"name":"Bunker_4","order":3,"path":"rooms/Bunker_4/Bunker_4.yy",},
     {"name":"Bunker_5","order":5,"path":"rooms/Bunker_5/Bunker_5.yy",},
     {"name":"Fase1","order":3,"path":"rooms/Fase1/Fase1.yy",},
-    {"name":"Laboratorio1_Child_0","order":4,"path":"rooms/Laboratorio1_Child_0/Laboratorio1_Child_0.yy",},
-    {"name":"Laboratorio1_Child_1","order":5,"path":"rooms/Laboratorio1_Child_1/Laboratorio1_Child_1.yy",},
     {"name":"Laboratorio1","order":2,"path":"rooms/Laboratorio1/Laboratorio1.yy",},
     {"name":"ProvaDeFogo","order":1,"path":"rooms/ProvaDeFogo/ProvaDeFogo.yy",},
     {"name":"Spr_arvoresFundo","order":1,"path":"sprites/Spr_arvoresFundo/Spr_arvoresFundo.yy",},
