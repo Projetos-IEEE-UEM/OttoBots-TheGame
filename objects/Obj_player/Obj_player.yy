@@ -40,6 +40,9 @@
     "name":"Spr_player",
     "path":"sprites/Spr_player/Spr_player.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"spr_colision_player_idle",
+    "path":"sprites/spr_colision_player_idle/spr_colision_player_idle.yy",
+  },
   "visible":true,
 }

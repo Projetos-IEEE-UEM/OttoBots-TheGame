@@ -56,7 +56,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.14.4.222",
+    "IDEVersion":"2026.0.0.16",
   },
   "name":"Otto Bots - The Game",
   "resources":[
@@ -126,6 +126,8 @@
     {"id":{"name":"Spr_Bunker_Layer_3","path":"sprites/Spr_Bunker_Layer_3/Spr_Bunker_Layer_3.yy",},},
     {"id":{"name":"Spr_Bunker_Layer_4","path":"sprites/Spr_Bunker_Layer_4/Spr_Bunker_Layer_4.yy",},},
     {"id":{"name":"Spr_ceu","path":"sprites/Spr_ceu/Spr_ceu.yy",},},
+    {"id":{"name":"spr_colision_player_crouch","path":"sprites/spr_colision_player_crouch/spr_colision_player_crouch.yy",},},
+    {"id":{"name":"spr_colision_player_idle","path":"sprites/spr_colision_player_idle/spr_colision_player_idle.yy",},},
     {"id":{"name":"Spr_Cx_Dialogo","path":"sprites/Spr_Cx_Dialogo/Spr_Cx_Dialogo.yy",},},
     {"id":{"name":"Spr_Dust","path":"sprites/Spr_Dust/Spr_Dust.yy",},},
     {"id":{"name":"Spr_Elementos_De_Cenario","path":"sprites/Spr_Elementos_De_Cenario/Spr_Elementos_De_Cenario.yy",},},

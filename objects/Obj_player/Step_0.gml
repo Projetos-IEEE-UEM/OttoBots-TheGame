@@ -98,6 +98,44 @@ if(dano == false){
 
 #endregion
 
+// Se a tecla S / Baixo for pressionada, o Otto tenta agachar
+if (keyboard_check(global.baixo) or gamepad_button_check(0, gp_face3)) {
+    agachar = true;
+}
+
+if (agachar) {
+    velocidade_movimento = 4; // Nota: No teu código a velocidade aumenta quando agacha, mantive isso!
+    
+    // FORÇA O JOGO A USAR A MÁSCARA MENOR (Evita expandir para as paredes)
+    // Certifica-te de que criaste esse sprite e a origem dele está em "Bottom Centre"
+    mask_index = spr_colision_player_crouch; 
+    
+} else {
+    // Se não estiver a carregar no botão, precisamos de checar se REALMENTE podemos levantar.
+    // IMPORTANTE: Altera o "-16" para a diferença de altura exata entre o teu player em pé e agachado!
+    var _teto_acima = place_meeting(x, y - 16, Obj_block); 
+    
+    if (!_teto_acima) {
+        agachar = false;
+        
+        // VOLTA PARA A MÁSCARA NORMAL EM PÉ
+        // Certifica-te de que a origem também está em "Bottom Centre"
+        mask_index = spr_colision_player_idle;
+    }
+}
+
+// Se não tiver nenhum bloco em cima e o botão foi solto (e o teto está livre pelo código acima)
+if !agachar {
+    velocidade_movimento = 3;
+}
+
+// Muda a altura do pulo do player quando este está agachado
+if (agachar) {
+    vel_pulo = -5;
+} else {
+    vel_pulo = -7;
+}
+
 #region MAQUINA DE ESTADOS
 jump = (keyboard_check_pressed(global.pular) or gamepad_button_check_pressed(0, gp_face1))
 
@@ -309,7 +347,22 @@ if dano {
 //Checando se eu encostei num inimigo, projétil ou bloco para tomar dano dele
 var _inimigo = instance_place(x, y, Obj_inimigo_pai);
 var _projetil = instance_place(x,y, Obj_projetil_pai);
-var _bloco_dano = instance_place(x+direcao,y+1, Obj_block_dano);
+var _bloco_dano = noone;
+_bloco_dano = instance_place(x+direcao,y+1, Obj_block_dano);
+
+if (_bloco_dano == noone) {
+    // Qtd de pixels de distancia em volta do player pra procurar por um bloco de dano
+    var _margem_busca = 1; 
+    
+    // Se o vento está a empurrar para a ESQUERDA (xspd < 0 ou o vento vem da direita)
+    if (xspd < 0 or (instance_exists(Obj_Tempestade) && Obj_Tempestade.forca_tempestade > 0)) {
+        _bloco_dano = instance_place(x - _margem_busca, y, Obj_block_dano);
+    } 
+    // Se o vento estivesse a empurrar para a DIREITA
+    else if (xspd > 0) {
+        _bloco_dano = instance_place(x + _margem_busca, y, Obj_block_dano);
+    }
+}
 
 //So toma dano qunado nao esta morto
 if estado!="morto"{

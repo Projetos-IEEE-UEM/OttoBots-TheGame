@@ -70,6 +70,8 @@
     {"name":"Spr_Bunker_Layer_3","order":2,"path":"sprites/Spr_Bunker_Layer_3/Spr_Bunker_Layer_3.yy",},
     {"name":"Spr_Bunker_Layer_4","order":3,"path":"sprites/Spr_Bunker_Layer_4/Spr_Bunker_Layer_4.yy",},
     {"name":"Spr_ceu","order":2,"path":"sprites/Spr_ceu/Spr_ceu.yy",},
+    {"name":"spr_colision_player_crouch","order":6,"path":"sprites/spr_colision_player_crouch/spr_colision_player_crouch.yy",},
+    {"name":"spr_colision_player_idle","order":5,"path":"sprites/spr_colision_player_idle/spr_colision_player_idle.yy",},
     {"name":"Spr_Cx_Dialogo","order":1,"path":"sprites/Spr_Cx_Dialogo/Spr_Cx_Dialogo.yy",},
     {"name":"Spr_Elementos_De_Cenario","order":4,"path":"sprites/Spr_Elementos_De_Cenario/Spr_Elementos_De_Cenario.yy",},
     {"name":"Spr_fundo1","order":3,"path":"sprites/Spr_fundo1/Spr_fundo1.yy",},
