@@ -347,7 +347,22 @@ if dano {
 //Checando se eu encostei num inimigo, projétil ou bloco para tomar dano dele
 var _inimigo = instance_place(x, y, Obj_inimigo_pai);
 var _projetil = instance_place(x,y, Obj_projetil_pai);
-var _bloco_dano = instance_place(x+direcao,y+1, Obj_block_dano);
+var _bloco_dano = noone;
+_bloco_dano = instance_place(x+direcao,y+1, Obj_block_dano);
+
+if (_bloco_dano == noone) {
+    // Qtd de pixels de distancia em volta do player pra procurar por um bloco de dano
+    var _margem_busca = 1; 
+    
+    // Se o vento está a empurrar para a ESQUERDA (xspd < 0 ou o vento vem da direita)
+    if (xspd < 0 or (instance_exists(Obj_Tempestade) && Obj_Tempestade.forca_tempestade > 0)) {
+        _bloco_dano = instance_place(x - _margem_busca, y, Obj_block_dano);
+    } 
+    // Se o vento estivesse a empurrar para a DIREITA
+    else if (xspd > 0) {
+        _bloco_dano = instance_place(x + _margem_busca, y, Obj_block_dano);
+    }
+}
 
 //So toma dano qunado nao esta morto
 if estado!="morto"{
