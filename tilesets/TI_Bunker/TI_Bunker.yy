@@ -5,12 +5,7 @@
   "macroPageTiles":{
     "SerialiseHeight":4,
     "SerialiseWidth":5,
-    "TileCompressedData":[
-      -19,
-      0,
-      1,
-      18,
-    ],
+    "TileCompressedData":[-19,0,1,18,],
     "TileDataFormat":1,
   },
   "name":"TI_Bunker",

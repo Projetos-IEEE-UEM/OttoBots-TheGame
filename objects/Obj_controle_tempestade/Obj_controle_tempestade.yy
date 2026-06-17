@@ -1,16 +1,13 @@
 {
   "$GMObject":"",
-  "%Name":"Obj_Fase1",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "%Name":"Obj_controle_tempestade",
+  "eventList":[],
   "managed":true,
-  "name":"Obj_Fase1",
+  "name":"Obj_controle_tempestade",
   "overriddenProperties":[],
   "parent":{
-    "name":"Fases",
-    "path":"folders/Objetos/Fases.yy",
+    "name":"Controladores",
+    "path":"folders/Objetos/Controladores.yy",
   },
   "parentObjectId":null,
   "persistent":false,
