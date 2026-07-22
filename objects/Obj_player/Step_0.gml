@@ -91,7 +91,7 @@ else{
 if(dano == false){
 	//funcionamento do pulo
 	if ((keyboard_check_pressed(global.pular) or gamepad_button_check_pressed(0, gp_face1)) && pulos > 0){ //Se o botão de pulo for pressionado e a condição de debounce for cumprida;
-		vel_movimento_vertical = vel_pulo
+        vel_movimento_vertical = vel_pulo
 		pulos -= 1
 	}
 }
@@ -104,7 +104,7 @@ if (keyboard_check(global.baixo) or gamepad_button_check(0, gp_face3)) {
 }
 
 if (agachar) {
-    velocidade_movimento = 4; // Nota: No teu código a velocidade aumenta quando agacha, mantive isso!
+    velocidade_movimento = 4;
     
     // FORÇA O JOGO A USAR A MÁSCARA MENOR (Evita expandir para as paredes)
     // Certifica-te de que criaste esse sprite e a origem dele está em "Bottom Centre"
@@ -135,6 +135,8 @@ if (agachar) {
 } else {
     vel_pulo = -7;
 }
+
+
 
 #region MAQUINA DE ESTADOS
 jump = (keyboard_check_pressed(global.pular) or gamepad_button_check_pressed(0, gp_face1))
