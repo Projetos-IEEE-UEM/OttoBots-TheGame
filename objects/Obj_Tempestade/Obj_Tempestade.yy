@@ -37,7 +37,7 @@
     },
     {
       "$GMEvent": "v1",
-      "%Name": "",
+     "%Name": "",
       "collisionObjectId": null,
       "eventNum": 0,
       "eventType": 8,

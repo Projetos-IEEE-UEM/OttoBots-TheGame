@@ -23,7 +23,7 @@
   ],
   "name":"spr_block_gelo",
   "nineSlice":null,
-  "origin":1,
+  "origin":0,
   "parent":{
     "name":"Colisao",
     "path":"folders/Sprites/Colisao.yy",
@@ -75,7 +75,7 @@
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":32,
+    "xorigin":0,
     "yorigin":0,
   },
   "swatchColours":null,

@@ -58,7 +58,7 @@
         {"$GMRInstance":"v4","%Name":"inst_59FFB1A6_1","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_59FFB1A6_1","objectId":{"name":"Obj_block","path":"objects/Obj_block/Obj_block.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":-0.03426402,"scaleX":1.0,"scaleY":8.0,"x":864.0,"y":0.0,},
         {"$GMRInstance":"v4","%Name":"inst_1836CFC7_1","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_1836CFC7_1","objectId":{"name":"Obj_block","path":"objects/Obj_block/Obj_block.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":26.0,"scaleY":1.0,"x":32.0,"y":-32.0,},
         {"$GMRInstance":"v4","%Name":"inst_2ECA6A41_1","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_2ECA6A41_1","objectId":{"name":"Obj_block","path":"objects/Obj_block/Obj_block.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":28.0,"scaleY":1.0,"x":0.0,"y":256.0,},
-      ],"layers":[],"name":"Block","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":false,},
+      ],"layers":[],"name":"Block","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"Chao","depth":500,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Chao","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":9,"SerialiseWidth":28,"TileCompressedData":[
           -20,-2147483648,1,0,-27,-2147483648,-2,0,-26,-2147483648,-2,0,-26,-2147483648,1,0,-14,-2147483648,-10,
           0,1,-2147483648,-6,0,-14,-2147483648,-11,0,-2,-2147483648,-2,0,-3,-2147483648,-10,0,7,96,97,98,0,0,96,
@@ -105,7 +105,7 @@
   },
   "sequenceId":null,
   "views":[
-    {"hborder":450,"hport":720,"hspeed":-1,"hview":288,"inherit":false,"objectId":{"name":"Obj_cam","path":"objects/Obj_cam/Obj_cam.yy",},"vborder":360,"visible":true,"vspeed":-1,"wport":1280,"wview":512,"xport":0,"xview":0,"yport":0,"yview":0,},
+    {"hborder":32,"hport":720,"hspeed":-1,"hview":288,"inherit":false,"objectId":null,"vborder":32,"visible":true,"vspeed":-1,"wport":1280,"wview":512,"xport":0,"xview":0,"yport":0,"yview":0,},
     {"hborder":32,"hport":768,"hspeed":-1,"hview":768,"inherit":false,"objectId":null,"vborder":32,"visible":false,"vspeed":-1,"wport":1366,"wview":1366,"xport":0,"xview":0,"yport":0,"yview":0,},
     {"hborder":32,"hport":768,"hspeed":-1,"hview":768,"inherit":false,"objectId":null,"vborder":32,"visible":false,"vspeed":-1,"wport":1366,"wview":1366,"xport":0,"xview":0,"yport":0,"yview":0,},
     {"hborder":32,"hport":768,"hspeed":-1,"hview":768,"inherit":false,"objectId":null,"vborder":32,"visible":false,"vspeed":-1,"wport":1366,"wview":1366,"xport":0,"xview":0,"yport":0,"yview":0,},

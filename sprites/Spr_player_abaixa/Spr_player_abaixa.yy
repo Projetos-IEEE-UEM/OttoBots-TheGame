@@ -29,7 +29,7 @@
   ],
   "name":"Spr_player_abaixa",
   "nineSlice":null,
-  "origin":9,
+  "origin":7,
   "parent":{
     "name":"Player",
     "path":"folders/Sprites/Player.yy",
