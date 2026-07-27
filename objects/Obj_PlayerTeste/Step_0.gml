@@ -9,10 +9,9 @@ else { // Não está agachado
 }
 
 
-
-
 // Pegar os movimentos
 getControls();
+
 
 // Movimenta no eixo X
     // Verifica a direção
@@ -23,7 +22,10 @@ getControls();
     rightKey = 1 & leftKey = 0  |  moveDir = 1 (vai pra direita)
     rightKey = 1 & leftKey = 1  |  moveDir = 0 (parado)
     */
-
+    
+    // Atualiza a direção que o player está olhando
+    if moveDir != 0 { facing = moveDir; }
+    
     xspd = moveDir * velMove;
     
     // Colide com a parede perfeitamente
@@ -54,16 +56,28 @@ getControls();
 
 
 // Movimenta no eixo Y
-    // Sempre soma gravidade na velocidade y
-    yspd += grav;
-    if yspd > vel_terminal { yspd = vel_terminal; }
-
+    // Gravidade
+        // Se o timer do buffer não acabou não aplicar gravidade até ele acabar
+         if bufferQuedaTimer > 0 {
+            bufferQuedaTimer--;
+        }
+        else {
+            // O buffer acabou, aplica a gravidade no player
+            yspd += grav;
+            if yspd > vel_terminal { yspd = vel_terminal; }
+            setNoChao(false);
+        }
+    
     // Verifica se o pulo começa no chão
-    if noChao { qtdPulos = 0; }
+    if noChao { 
+        qtdPulos = 0;
+        bufferPuloTimer = bufferFramesPulo;
+    }
     // Se o player está no ar
     else {
-        if qtdPulos == 0 {
-            // Se o player estiver no ar e não tiver pulado ainda, perde o primeiro pulo
+        // Se o player estiver no ar e não tiver pulado ainda, perde o primeiro pulo
+        bufferPuloTimer--;
+        if qtdPulos == 0 && bufferPuloTimer <= 0 {
             qtdPulos = 1;
         }
     }
@@ -78,6 +92,10 @@ getControls();
         // Aumenta a quantia de pulos realizados
         qtdPulos++;
         
+        // noChao = false
+        pulou = true;
+        setNoChao(false);
+        
         yspd = jumpSpd;
     }
     
@@ -91,13 +109,12 @@ getControls();
         // Colide com o bloco
         yspd = 0;
     }
-
+    
     // Verifica se o player está no chão (sólido)
     if yspd >= 0 && place_meeting(x, y+1, Obj_block) {
-        noChao = true;
+        setNoChao(true);
     }
-    else { noChao = false; }
-
+    
     y += yspd;
 
 
@@ -110,7 +127,7 @@ getControls();
     }
     else {
         // Verifica se não tem um teto acima do jogador para parar de agachar
-        if place_meeting(x, y-16, Obj_block) {
+        if agachar && place_meeting(x, y-16, Obj_block) {
             // Se tiver um teto mantem agachado
             agachar = true; 
         }
@@ -126,3 +143,31 @@ getControls();
 
 
 // Modificações de sprite
+    // Andando
+    if abs(xspd) > 0 { sprite_index = sprWalk; }
+    // Parado
+    if abs(xspd == 0) { sprite_index = sprIdle; }
+    if !noChao {
+        // Se o player estiver agachado não será usada as sprites em pé
+        if !agachar {
+            // Coloca a mascara correta nas sprites
+            mask_index = maskSprStanding;
+            // Pulando
+            if yspd < 0 {
+                sprite_index = sprJump;
+                // Para a sprite na imagem com o braço pra cima
+                if image_index >= image_number - 1 { 
+                    image_index = image_number-1; 
+                }
+            }
+            // Caindo
+            else { sprite_index = sprFall; }
+        }
+    }
+    // Agachado
+    if agachar {
+        // Arrumar a mascara para o player agachado
+        mask_index = maskSprCrouch;
+        sprite_index = sprCrouch;
+    }
+

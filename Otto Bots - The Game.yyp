@@ -218,6 +218,7 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"roomInit","path":"rooms/roomInit/roomInit.yy",},},
+    {"roomId":{"name":"testingRoom","path":"rooms/testingRoom/testingRoom.yy",},},
     {"roomId":{"name":"room_menu","path":"rooms/room_menu/room_menu.yy",},},
     {"roomId":{"name":"Laboratorio1","path":"rooms/Laboratorio1/Laboratorio1.yy",},},
     {"roomId":{"name":"Bunker_1","path":"rooms/Bunker_1/Bunker_1.yy",},},
@@ -227,7 +228,6 @@
     {"roomId":{"name":"Bunker_5","path":"rooms/Bunker_5/Bunker_5.yy",},},
     {"roomId":{"name":"ProvaDeFogo","path":"rooms/ProvaDeFogo/ProvaDeFogo.yy",},},
     {"roomId":{"name":"Fase1","path":"rooms/Fase1/Fase1.yy",},},
-    {"roomId":{"name":"testingRoom","path":"rooms/testingRoom/testingRoom.yy",},},
   ],
   "templateType":null,
   "TextureGroups":[
