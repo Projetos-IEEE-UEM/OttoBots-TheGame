@@ -4,7 +4,7 @@
 Se _val for igual a true, quer dizer que estamos querendo trocar o valor de 
 noChao para true, e o contrário para o false. 
 Uma variavel com valor iniciado no parametro (_val = true, mas pode ser outras 
-coisas) indica que o parametro passado na função é opcional.
+coisas) indica que o parametro passado na função é opcional (setNoChao() muda pra true tbm).
 */
 function setNoChao(_val = true) {
     if _val == true {
@@ -13,8 +13,27 @@ function setNoChao(_val = true) {
     }
     else {
         noChao = false;
+        plataformaQueEstou = noone;
         bufferQuedaTimer = 0;
     }
+}
+
+/*
+Verifica se o player está em cima de uma plataforma semisólida
+
+_static diz se a plataforma será móvel ou não, deseja ver se a plataforma é 
+exclusivamente móvel _static precisa ser true
+*/
+function estouSemiSolida(_static = true) {
+    if _static == true {
+        return plataformaQueEstou.object_index == Obj_SemiSolidBlock 
+        || object_is_ancestor(plataformaQueEstou.object_index, Obj_SemiSolidBlock);
+    }
+    else {
+        return plataformaQueEstou.object_index == Obj_movingSSB 
+        || object_is_ancestor(plataformaQueEstou.object_index, Obj_movingSSB);
+    }
+     
 }
 
 // Sprites
@@ -64,3 +83,7 @@ agachar = false; // Indica se o player está agachado
 
 vidas = 1 // Começa com apenas uma vida e aumenta conforme coleta os raios
 
+// Plataformas móveis
+plataformaQueEstou = noone; // Indica a plataforma móvel que está no pé do player
+platMovelXspd = 0;
+platMovelYspMax = vel_terminal // O quão rápido o player segue a plataforma se movendo pra baixo

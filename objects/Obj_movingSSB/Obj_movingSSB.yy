@@ -1,17 +1,21 @@
 {
   "$GMObject":"",
-  "%Name":"Obj_SemiSolidBlock",
+  "%Name":"Obj_movingSSB",
   "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":1,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"Obj_SemiSolidBlock",
+  "name":"Obj_movingSSB",
   "overriddenProperties":[],
   "parent":{
     "name":"Controladores",
     "path":"folders/Objetos/Controladores.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"Obj_SemiSolidBlock",
+    "path":"objects/Obj_SemiSolidBlock/Obj_SemiSolidBlock.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -30,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_semiSolidBlock",
-    "path":"sprites/spr_semiSolidBlock/spr_semiSolidBlock.yy",
+    "name":"spr_movingSSB",
+    "path":"sprites/spr_movingSSB/spr_movingSSB.yy",
   },
   "spriteMaskId":null,
   "visible":true,
