@@ -1,16 +1,39 @@
-// Alterações se estiver agachado
-if agachar {
-    jumpSpd = -5;
-    velMove = 4;
-}
-else { // Não está agachado
-    jumpSpd = -7;
-    velMove = 3;
-}
-
-
 // Pegar os movimentos
 getControls();
+
+
+// Maquina de estados
+    // Player agachado
+    if crouchKey {
+        agachar = true;
+    }
+    else {
+        // Verifica se não tem um teto acima do jogador para parar de agachar
+        if agachar && place_meeting(x, y-16, Obj_block) {
+            // Se tiver um teto mantem agachado
+            agachar = true; 
+        }
+        else { agachar = false; }
+    }
+    // Alterações se estiver agachado
+   if agachar {
+       jumpSpd = -5;
+       velMove += 0.2
+       if velMove > velMax { // Aceleração
+           velMove = 4;
+       }
+   }
+   else { // Não está agachado
+       jumpSpd = -7;
+       velMove = 3;
+   }
+    
+    // Player invunerável (tomou dando)
+    
+    
+    // Player morreu
+
+
 
 
 // Movimenta no eixo X
@@ -190,6 +213,7 @@ getControls();
 
 // Parte final da movimentação e da colisão
     // Snapping no eixo X na plataformaQueEstou se ela está se movendo horizontalmente
+    // Faz com que o player se mova junto com a plataforma no eixo X
     platMovelXspd = 0;
     if instance_exists(plataformaQueEstou) { platMovelXspd = plataformaQueEstou.xspd; }
     
@@ -205,6 +229,7 @@ getControls();
     x += platMovelXspd
     
     // Snapping no eixo Y na plataformaQueEstou se ela está se movendo verticalmente
+    // Faz com que o player se mova junto com a plataforma no eixo Y
     if instance_exists(plataformaQueEstou) && (plataformaQueEstou.yspd != 0 
         || estouSemiSolida(false)) 
     {
@@ -227,28 +252,6 @@ getControls();
             setNoChao(false);
         } 
     }
-
-
-
-// Maquina de estados
-    // Player agachado
-    if crouchKey {
-        agachar = true;
-    }
-    else {
-        // Verifica se não tem um teto acima do jogador para parar de agachar
-        if agachar && place_meeting(x, y-16, Obj_block) {
-            // Se tiver um teto mantem agachado
-            agachar = true; 
-        }
-        else { agachar = false; }
-    }
-    
-    // Player invunerável (tomou dando)
-    
-    
-    // Player morreu
-
 
 
 

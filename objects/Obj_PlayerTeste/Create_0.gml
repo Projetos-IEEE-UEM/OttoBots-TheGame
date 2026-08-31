@@ -55,7 +55,7 @@ controlsSetup();
 
 facing = 1; // Direção que o player estará olhando na sprite (-1 -> esquerda, 1 -> direita)
 moveDir = 0; // Direção do movimento (-1 -> esquerda, 0 -> parado, 1 -> direita)
-velMove =  3;
+velMove = 3;
 
 // Velocidade de movimento nos eixos
 xspd = 0;
@@ -81,9 +81,18 @@ yspd = 0;
 
 agachar = false; // Indica se o player está agachado
 
-vidas = 1 // Começa com apenas uma vida e aumenta conforme coleta os raios
+// Começa com apenas uma *vidas* e aumenta até *maxVidas* conforme coleta os raios
+vidas = 1 
+maxVidas = 4
+
+moedas = 0;
 
 // Plataformas móveis
 plataformaQueEstou = noone; // Indica a plataforma móvel que está no pé do player
 platMovelXspd = 0;
-platMovelYspMax = vel_terminal // O quão rápido o player segue a plataforma se movendo pra baixo
+platMovelYspMax = vel_terminal // O quão rápido o player segue a plataforma se movendo pra baixo]
+
+// Aceleração
+framesAcel = 10; // A cada 60, se passa um segundo
+velAcel = 0.3;
+velMax = 4;

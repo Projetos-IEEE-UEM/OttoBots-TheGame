@@ -41,5 +41,8 @@ function getControls() {
         // Agachar
             crouchKey = keyboard_check(ord("S")) + keyboard_check(vk_down) + gamepad_button_check(0, gp_face3);
                 crouchKey = clamp(crouchKey, 0, 1);
+    
+            crouchKeyPressed = keyboard_check_pressed(ord("S")) + keyboard_check_pressed(vk_down) + gamepad_button_check_pressed(0, gp_face3);
+                crouchKeyPressed = clamp(crouchKeyPressed, 0, 1);
 }
 

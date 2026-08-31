@@ -7,6 +7,7 @@ if keyboard_check_pressed(vk_f11) {
     // Se estiver em tela cheia, tira da tela cheia, e caso não estiver muda pra tela cheia
 }
 
+
 // Para de funcionar se não existir um player na room
 if !instance_exists(Obj_PlayerTeste) exit;
     
@@ -27,4 +28,3 @@ finalCamY += (_camY - finalCamY) * velCamera;
 
 // Coloca a camera nas coordenadas camX e camY
 camera_set_view_pos(view_camera[0], finalCamX, finalCamY);
-
