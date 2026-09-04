@@ -1,10 +1,3 @@
-if(global.pause){
-	image_speed = 0;
-	exit
-}
-else{
-	image_speed = 1;
-}
 
 //Se ele estiver morto, troca a animacao de morte e o codigo vai parar de ser executado
 if morto {

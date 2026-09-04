@@ -1,3 +1,13 @@
+// Estados do player
+// Coloquei isso mas ainda não sei se tem uma implementação boa pra esses estados
+enum PlayerStates {
+    IDLE,
+    ANDANDO,
+    AGACHADO,
+    DANO,
+    MORTO
+}
+
 // Funções do player
 
 /*
@@ -36,6 +46,19 @@ function estouSemiSolida(_static = true) {
      
 }
 
+/*
+Faz com que o player quique (la ele) depois de matar um inimigo, ou sofrer dano
+*/
+function playerBounce() {
+    if playerState == PlayerStates.DANO {
+        xspd += 3 * (-moveDir);
+    }
+    else {
+        xspd += 3 * (moveDir);
+    }
+    yspd = jumpSpd + 2
+}
+
 // Sprites
 maskSprStanding = spr_colision_player_idle;  // Mask pra quando o player estiver em pé (pulando, andando ou parado)
 maskSprCrouch = spr_colision_player_crouch; // Mask pra quando o player estiver no modo carro
@@ -52,6 +75,8 @@ spritePuloTimer = 0;
 
 // Configuração dos controles
 controlsSetup();
+
+playerState = PlayerStates.IDLE;
 
 facing = 1; // Direção que o player estará olhando na sprite (-1 -> esquerda, 1 -> direita)
 moveDir = 0; // Direção do movimento (-1 -> esquerda, 0 -> parado, 1 -> direita)
@@ -84,6 +109,8 @@ agachar = false; // Indica se o player está agachado
 // Começa com apenas uma *vidas* e aumenta até *maxVidas* conforme coleta os raios
 vidas = 1 
 maxVidas = 4
+dmgTimer = 0
+dmgBuffer = 30;
 
 moedas = 0;
 

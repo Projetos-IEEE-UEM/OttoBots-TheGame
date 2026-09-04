@@ -1,12 +1,3 @@
-//Se meu jogo estiver pausado:
-if(global.pause){
-	image_speed = 0; //Paro de atualizar meus sprites;
-	exit //Paro de executar meu código;
-}
-//Se meu jogo não estiver pausado:
-else{
-	image_speed = 1; //Volto a atualizar meus sprites e o programação segue normalmente.
-}
 
 // Quando encontrar um objeto de bloqueio na sua frente, o inimigo muda sua direção
 if place_meeting(x+xspd, y, Obj_block){

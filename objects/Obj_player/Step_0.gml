@@ -54,7 +54,7 @@ if agachar && move == 0 {
 	dust_timer -= 1;
 
 	// Verifica se é hora de criar partículas de poeira
-	if (dust_timer <= 0) {
+	if (dust_timer <= 0) { 
 	    // Reseta o temporizador
 	    dust_timer = dust_interval;
 
