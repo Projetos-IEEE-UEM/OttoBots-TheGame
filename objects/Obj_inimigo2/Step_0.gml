@@ -1,12 +1,4 @@
-//Se meu jogo estiver pausado:
-if(global.pause){
-	image_speed = 0; //Paro de atualizar meus sprites;
-	exit //Paro de executar meu código;
-}
-//Se meu jogo não estiver pausado:
-else{
-	image_speed = 1; //Volto a atualizar meus sprites e o programação segue normalmente.
-}
+
 
 /*Aqui cuidarei de como esse robô deve ser comportar no eixo y. Quero que ele fique a uma
 distância constante do Otto, subindo e descendo conforme a necessidade. Por isso, farei
@@ -25,17 +17,18 @@ if morto && caiu == true{
 /*Aqui vou definir o critério que fará o inimigo começar a perseguir o Otto: é basicamente uma conta com a 
 posição do jogador e do inimigo. Se o valor absoluto (distância) do jogardor com o inimigo for menor que o 
 raio imposto acima, o inimigo deve começar uma perseguição. ~Bruno*/
-if (abs(x - Obj_player.x) < var_raio && abs(y - Obj_player.y) < var_raio) {
+
+if (abs(x - Obj_PlayerTeste.x) < var_raio && abs(y - Obj_PlayerTeste.y) < var_raio) {
 	seguir = true;
 }
 //Caso o Otto saia do range definido pela variável var_raio_fuga, o inimigo deve parar de seguir.
-if (abs(x - Obj_player.x) > var_raio_fuga or abs(y - Obj_player.y) > var_raio_fuga) {
+if (abs(x - Obj_PlayerTeste.x) > var_raio_fuga or abs(y - Obj_PlayerTeste.y) > var_raio_fuga) {
 	seguir = false;
 }
 
 //enquanto ele nao toma dano, ele persegue o player e atira nele
 if (dano == false && seguir == true){
-	if y - Obj_player.y > -80
+	if y - Obj_PlayerTeste.y > -80
 	{
 		//O robô deve acelerar para cima:
 		aceleracao_vertical = aceleracao_vertical - 0.05;
@@ -53,7 +46,7 @@ if (dano == false && seguir == true){
 	//Agora sobre o movimento horizontal:
 
 	//Se o player estiver a esquerda
-	if Obj_player.x < x
+	if Obj_PlayerTeste.x < x
 	{
 		//Se o Otto estiver a esquerda, acelero para a esquerda.
 		aceleracao = aceleracao - 0.01;

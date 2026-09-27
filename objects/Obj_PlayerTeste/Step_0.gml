@@ -28,27 +28,23 @@ getControls();
         velMove = 3;
     }
 
-    if playerState == PlayerStates.DANO {
+    if dano {
         // Player invunerável (tomou dando mas está vivo)
-        if vidas > 0 && dmgTimer > 0 {
-            jumpSpd = -15;
+        if dmgTimer > 0 {
+            jumpSpd = -4;
             velMove = 0.3;
+            dmgTimer--;
         }
-        else if dmgTimer <= 0 {
-            playerState = PlayerStates.IDLE;
-        }
-        // Player morreu
         else {
-            moedas = 0;
-            playerState = PlayerStates.MORTO;
+            dano = false;
         }
     }
-    
-    
-    
-    
-    
 
+    if vidas == 0 {
+        moveDir = 0;
+        velMove = 0;
+        jumpSpd = 0;
+    }
 
 
 // Movimenta no eixo X
@@ -65,14 +61,32 @@ getControls();
     if moveDir != 0 { facing = moveDir; }
     
     xspd = moveDir * velMove;
+
+    // Verifica se embaixo dele tem um inimigo
+        if yspd > 0 {
+            var _inimigo = instance_place(x, y+1, Obj_inimigo_pai);
+            if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) {
+                _inimigo.dano = true;
+                playerBounce();
+            }    
+        }
     
     // Verifica se ele não encontra um inimigo
     var _inimigo = instance_place(x + 1, y, Obj_inimigo_pai);
-    if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) {
+    if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) && dmgTimer == 0{
         vidas--;
-        playerState = PlayerStates.DANO;
+        dmgTimer = dmgBuffer;
+        dano = true;
         playerBounce();
     }
+
+    // Verifica se tem um inimigo acima dele, se tiver toma dano
+    var _inimigo = instance_place(x, y-1, Obj_inimigo_pai);
+    if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) && dmgTimer == 0 {
+        vidas--;
+        dmgTimer = dmgBuffer;
+        dano = true;
+    }  
 
     // Colide com a parede perfeitamente
     var _subPixel = 0.5; // Valor de meio pixel para verificar quao longe da parede está
@@ -144,13 +158,7 @@ getControls();
         
         yspd = jumpSpd;
     }
-    // Verifica se tem um inimigo acima dele, se tiver toma dano
-    var _inimigo = instance_place(x, y-1, Obj_inimigo_pai);
-    if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) {
-        vidas--;
-        playerState = PlayerStates.DANO;
-        playerBounce();
-    }  
+    
     // Colide com o teto com precisão
     var _subPixel = 0.5;
     if place_meeting(x, y + yspd, Obj_block) {
@@ -163,14 +171,7 @@ getControls();
     }
     
     // Player colide com o chão
-        // Verifica se embaixo dele tem um inimigo
-        if yspd > 0 {
-            var _inimigo = instance_place(x, y+1, Obj_inimigo_pai);
-            if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) {
-                _inimigo.morto = true;
-                playerBounce();
-            }    
-        }
+        
 
 
         // Verifica se o player está em uma plataforma semisolida ou sólida
@@ -329,10 +330,12 @@ getControls();
         }
     }
     // Tomou dano
-    if playerState == PlayerStates.DANO {
+    if dano {
         mask_index = sprHit;
-    }
-    if playerState == PlayerStates.MORTO {
-        mask_index = sprDead;
+        
+        if vidas == 0 { 
+            mask_index = sprDead; 
+            if image_index >= image_number - 1 { image_alpha -= 0.05; }
+        }
     }
 

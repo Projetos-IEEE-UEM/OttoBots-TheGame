@@ -418,6 +418,8 @@ if estado!="morto"{
 	}
 }
 
+
+
 #region Diálogo
 
 if distance_to_object(Obj_par_npcs) <= 10{

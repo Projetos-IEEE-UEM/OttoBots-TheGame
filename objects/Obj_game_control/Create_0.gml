@@ -2,7 +2,7 @@
 // que contam as moedas, a variável do número de vidas do player "vida" e a flag para resetar a fase. -Bruno
 coin = 0;
 
-resetar_fase = false;
+global.resetar_fase = false;
 
 global.vida = 1;
 
