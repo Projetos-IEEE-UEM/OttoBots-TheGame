@@ -1,92 +1,60 @@
 // Pegar os movimentos
 getControls();
 
+moveDir = (currentState == PlayerState.Dead) ? 0 : rightKey - leftKey;
+if moveDir != 0 { facing = moveDir; }
 
-// Maquina de estados
-    // Player agachado
-    if crouchKey {
-        agachar = true;
-    }
-    else {
-        // Verifica se não tem um teto acima do jogador para parar de agachar
-        if agachar && place_meeting(x, y-16, Obj_block) {
-            // Se tiver um teto mantem agachado
-            agachar = true; 
-        }
-        else { agachar = false; }
-    }
-    // Alterações se estiver agachado
-    if agachar {
-        jumpSpd = -5;
-        velMove += 0.2
-        if velMove > velMax { // Aceleração
-            velMove = 4;
-        }
-    }
-    else { // Não está agachado
-        jumpSpd = -7;
-        velMove = 3;
-    }
-
-    if dano {
-        // Player invunerável (tomou dando mas está vivo)
-        if dmgTimer > 0 {
-            jumpSpd = -4;
-            velMove = 0.3;
-            dmgTimer--;
-        }
-        else {
-            dano = false;
-        }
-    }
-
-    if vidas == 0 {
-        moveDir = 0;
-        velMove = 0;
-        jumpSpd = 0;
-    }
-
+atualizarEstado();
+aplicarParametrosDoEstado();
 
 // Movimenta no eixo X
-    // Verifica a direção
-    moveDir = rightKey - leftKey;
-    /*
-    rightKey = 0 & leftKey = 0  |  moveDir = 0 (parado)
-    rightKey = 0 & leftKey = 1  |  moveDir = -1 (vai pra esquerda)
-    rightKey = 1 & leftKey = 0  |  moveDir = 1 (vai pra direita)
-    rightKey = 1 & leftKey = 1  |  moveDir = 0 (parado)
-    */
+if currentState != PlayerState.Dead {
+    if knockbackTimer > 0 {
+        knockbackTimer--;
+        xspd *= 0.92
+    }
+    else {
+        xspd = moveDir * velMove;
+        
+        // Mecanica do vento
+        var _tempestade = instance_find(Obj_Tempestade, 0);
+            
+        if _tempestade != noone 
+            && _tempestade.tempestade_ativa 
+            && currentState != PlayerState.Crouching {
+                xspd -= _tempestade.forca_tempestade * 0.8; 
+        }
+    }
     
-    // Atualiza a direção que o player está olhando
-    if moveDir != 0 { facing = moveDir; }
-    
-    xspd = moveDir * velMove;
-
-    // Verifica se embaixo dele tem um inimigo
+    // Colisões com inimigos, projéteis e blocos de dano
+        // Verifica se embaixo dele tem um inimigo (pulou em cima)
         if yspd > 0 {
             var _inimigo = instance_place(x, y+1, Obj_inimigo_pai);
             if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) {
                 _inimigo.dano = true;
                 playerBounce();
-            }    
+            }
+        }
+   
+        // Inimigo ao lado: toma dano
+        var _inimigo = instance_place(x + 1, y, Obj_inimigo_pai);
+        if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) {
+            tomarDano();
+        }
+   
+        // Inimigo acima: toma dano, sem quique
+        var _inimigo = instance_place(x, y-1, Obj_inimigo_pai);
+        if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) {
+            tomarDano(false);
+        }
+       
+        // Projétil atinge o player
+        var _projetilInimigo = instance_place(x, y, Obj_projetil_pai) {
+            if instance_exists(_projetilInimigo) { tomarDano(false) }
         }
     
-    // Verifica se ele não encontra um inimigo
-    var _inimigo = instance_place(x + 1, y, Obj_inimigo_pai);
-    if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) && dmgTimer == 0{
-        vidas--;
-        dmgTimer = dmgBuffer;
-        dano = true;
-        playerBounce();
-    }
-
-    // Verifica se tem um inimigo acima dele, se tiver toma dano
-    var _inimigo = instance_place(x, y-1, Obj_inimigo_pai);
-    if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) && dmgTimer == 0 {
-        vidas--;
-        dmgTimer = dmgBuffer;
-        dano = true;
-    }  
+        // Player rela em um bloco de dano
+        if tocandoBlocoDano() { tomarDano(); }
 
     // Colide com a parede perfeitamente
     var _subPixel = 0.5; // Valor de meio pixel para verificar quao longe da parede está
@@ -98,22 +66,9 @@ getControls();
         }
         xspd = 0;
     }
-
-    // Mecanica do vento
-    //_inst = Obj_Tempestade; // Inicia a tempestade
-    
-    //if(instance_exists(_inst)) {
-    //    var _tempestade = _inst.tempestade_ativa;
-    //    
-    //    if (!agachar) {
-    //       xspd -= _inst.forca_tempestade * 0.8;
-    //        
-    //        velMove = lerp(4,2,_inst.forca_tempestade);
-    //    }
-    //}
     
     x += xspd;
-
+}
 
 // Movimenta no eixo Y
     // Gravidade
@@ -124,7 +79,7 @@ getControls();
         else {
             // O buffer acabou, aplica a gravidade no player
             yspd += grav;
-            if yspd > vel_terminal { yspd = vel_terminal; }
+            if yspd > velTerminal { yspd = velTerminal; }
             setNoChao(false);
         }
     
@@ -141,9 +96,16 @@ getControls();
             qtdPulos = 1;
         }
     }
+
+    // Descer de plataforma semisólida
+    if crouchKey && jumpKeyPressed && descerPlataforma() {
+        // Consome o pulo, senão ele dispara logo em seguida
+        jumpKeyBuffered = false;
+        jumpKeyBufferedTimer = 0;
+    }
     
     // Pula
-    if jumpKeyBuffered && qtdPulos < qtdMaxPulos { 
+    if jumpKeyBuffered && qtdPulos < qtdMaxPulos && currentState != PlayerState.Dead { 
         
         // Reseta o buffer
         jumpKeyBuffered = false;
@@ -170,10 +132,8 @@ getControls();
         yspd = 0;
     }
     
+    
     // Player colide com o chão
-        
-
-
         // Verifica se o player está em uma plataforma semisolida ou sólida
         var _clampYspd = max(0, yspd);
         
@@ -238,15 +198,6 @@ getControls();
                 yspd = 0;
                 setNoChao(true);
             }
-            
-    if crouchKey && jumpKeyPressed {
-        if instance_exists(plataformaQueEstou) && estouSemiSolida() {
-            var _yCheck = y + max(1, plataformaQueEstou.yspd + 1);
-            if !place_meeting(x, _yCheck, Obj_block) {
-                
-            }
-        }
-    }
     
     y += yspd;
 
@@ -294,48 +245,4 @@ getControls();
     }
 
 
-
-// Modificações de sprite
-    // Andando
-    if abs(xspd) > 0 { sprite_index = sprWalk; }
-
-    // Parado
-    if abs(xspd == 0) { sprite_index = sprIdle; }
-
-    // Se o player estiver agachado não será usada as sprites em pé
-    if !agachar {
-        if !noChao {
-            // Coloca a mascara correta nas sprites
-            mask_index = maskSprStanding;
-            // Pulando
-            if yspd < 0 {
-                sprite_index = sprJump;
-                // Para a sprite na imagem com o braço pra cima
-                if image_index >= image_number - 1 { 
-                    image_index = image_number-1; 
-                }
-            }
-            // Caindo
-            else { sprite_index = sprFall; }
-        }
-    }
-    // Agachado
-    else {
-        // Arrumar a mascara para o player agachado
-        mask_index = maskSprCrouch;
-        sprite_index = sprCrouch;
-        // As rodas não podem se mexer se o player estiver parado
-        if moveDir == 0 {
-            image_index = 1;
-        }
-    }
-    // Tomou dano
-    if dano {
-        mask_index = sprHit;
-        
-        if vidas == 0 { 
-            mask_index = sprDead; 
-            if image_index >= image_number - 1 { image_alpha -= 0.05; }
-        }
-    }
-
+atualizarSprite();
