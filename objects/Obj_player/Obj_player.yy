@@ -1,24 +1,20 @@
 {
   "$GMObject":"",
-  "%Name":"Obj_player",
+  "%Name":"Obj_Player",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":73,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"Obj_player",
+  "name":"Obj_Player",
   "overriddenProperties":[],
   "parent":{
     "name":"Player",
     "path":"folders/Objetos/Player.yy",
   },
-  "parentObjectId":{
-    "name":"Obj_entidade",
-    "path":"objects/Obj_entidade/Obj_entidade.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -40,9 +36,6 @@
     "name":"Spr_player",
     "path":"sprites/Spr_player/Spr_player.yy",
   },
-  "spriteMaskId":{
-    "name":"spr_colision_player_idle",
-    "path":"sprites/spr_colision_player_idle/spr_colision_player_idle.yy",
-  },
+  "spriteMaskId":null,
   "visible":true,
 }

@@ -1,3 +1,2 @@
-draw_self();
-//draw_text(x,y-20, cabeca_inimigo);
-//draw_text(x,y-40, Pulo_diagonal);
+// Desenha a sprite do player
+draw_sprite_ext(sprite_index, image_index, x, y, image_xscale * facing, image_yscale, image_angle, image_blend, image_alpha);

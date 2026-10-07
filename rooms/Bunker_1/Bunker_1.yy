@@ -13,7 +13,6 @@
     {"name":"inst_59FFB1A6","path":"rooms/Bunker_1/Bunker_1.yy",},
     {"name":"inst_1836CFC7","path":"rooms/Bunker_1/Bunker_1.yy",},
     {"name":"inst_2ECA6A41","path":"rooms/Bunker_1/Bunker_1.yy",},
-    {"name":"inst_7AE0DFB4","path":"rooms/Bunker_1/Bunker_1.yy",},
     {"name":"inst_3834D384","path":"rooms/Bunker_1/Bunker_1.yy",},
     {"name":"inst_7BA32D35","path":"rooms/Bunker_1/Bunker_1.yy",},
     {"name":"inst_370C168B","path":"rooms/Bunker_1/Bunker_1.yy",},
@@ -21,6 +20,7 @@
     {"name":"inst_6AFA8DE3","path":"rooms/Bunker_1/Bunker_1.yy",},
     {"name":"inst_33DE307","path":"rooms/Bunker_1/Bunker_1.yy",},
     {"name":"inst_2C865854","path":"rooms/Bunker_1/Bunker_1.yy",},
+    {"name":"inst_7F3FF26","path":"rooms/Bunker_1/Bunker_1.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -30,7 +30,7 @@
         {"$GMRInstance":"v4","%Name":"inst_2C865854","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_2C865854","objectId":{"name":"Obj_SemiSolidBlock","path":"objects/Obj_SemiSolidBlock/Obj_SemiSolidBlock.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":3.0,"scaleY":1.0,"x":320.0,"y":128.0,},
       ],"layers":[],"name":"Controladores","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Player","depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
-        {"$GMRInstance":"v4","%Name":"inst_7AE0DFB4","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_7AE0DFB4","objectId":{"name":"Obj_player","path":"objects/Obj_player/Obj_player.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":96.0,"y":256.0,},
+        {"$GMRInstance":"v4","%Name":"inst_7F3FF26","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_7F3FF26","objectId":{"name":"Obj_Player","path":"objects/Obj_Player/Obj_Player.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":96.0,"y":256.0,},
       ],"layers":[],"name":"Player","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Saida","depth":200,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v4","%Name":"inst_370C168B","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_370C168B","objectId":{"name":"Obj_End_Fase","path":"objects/Obj_End_Fase/Obj_End_Fase.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":832.0,"y":256.0,},

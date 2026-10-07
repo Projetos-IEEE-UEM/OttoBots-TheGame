@@ -18,17 +18,17 @@ if morto && caiu == true{
 posição do jogador e do inimigo. Se o valor absoluto (distância) do jogardor com o inimigo for menor que o 
 raio imposto acima, o inimigo deve começar uma perseguição. ~Bruno*/
 
-if (abs(x - Obj_PlayerTeste.x) < var_raio && abs(y - Obj_PlayerTeste.y) < var_raio) {
+if (abs(x - Obj_Player.x) < var_raio && abs(y - Obj_Player.y) < var_raio) {
 	seguir = true;
 }
 //Caso o Otto saia do range definido pela variável var_raio_fuga, o inimigo deve parar de seguir.
-if (abs(x - Obj_PlayerTeste.x) > var_raio_fuga or abs(y - Obj_PlayerTeste.y) > var_raio_fuga) {
+if (abs(x - Obj_Player.x) > var_raio_fuga or abs(y - Obj_Player.y) > var_raio_fuga) {
 	seguir = false;
 }
 
 //enquanto ele nao toma dano, ele persegue o player e atira nele
 if (dano == false && seguir == true){
-	if y - Obj_PlayerTeste.y > -80
+	if y - Obj_Player.y > -80
 	{
 		//O robô deve acelerar para cima:
 		aceleracao_vertical = aceleracao_vertical - 0.05;
@@ -46,7 +46,7 @@ if (dano == false && seguir == true){
 	//Agora sobre o movimento horizontal:
 
 	//Se o player estiver a esquerda
-	if Obj_PlayerTeste.x < x
+	if Obj_Player.x < x
 	{
 		//Se o Otto estiver a esquerda, acelero para a esquerda.
 		aceleracao = aceleracao - 0.01;

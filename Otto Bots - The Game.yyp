@@ -90,8 +90,8 @@
     {"id":{"name":"Obj_parallax","path":"objects/Obj_parallax/Obj_parallax.yy",},},
     {"id":{"name":"Obj_ParallaxGeral","path":"objects/Obj_ParallaxGeral/Obj_ParallaxGeral.yy",},},
     {"id":{"name":"Obj_pause","path":"objects/Obj_pause/Obj_pause.yy",},},
-    {"id":{"name":"Obj_player","path":"objects/Obj_player/Obj_player.yy",},},
-    {"id":{"name":"Obj_PlayerTeste","path":"objects/Obj_PlayerTeste/Obj_PlayerTeste.yy",},},
+    {"id":{"name":"Obj_player_desuso","path":"objects/Obj_player_desuso/Obj_player_desuso.yy",},},
+    {"id":{"name":"Obj_Player","path":"objects/Obj_Player/Obj_Player.yy",},},
     {"id":{"name":"Obj_projetil_pai","path":"objects/Obj_projetil_pai/Obj_projetil_pai.yy",},},
     {"id":{"name":"Obj_projetil","path":"objects/Obj_projetil/Obj_projetil.yy",},},
     {"id":{"name":"Obj_ProvaDeFogo","path":"objects/Obj_ProvaDeFogo/Obj_ProvaDeFogo.yy",},},
@@ -220,7 +220,6 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"roomInit","path":"rooms/roomInit/roomInit.yy",},},
-    {"roomId":{"name":"testingRoom","path":"rooms/testingRoom/testingRoom.yy",},},
     {"roomId":{"name":"room_menu","path":"rooms/room_menu/room_menu.yy",},},
     {"roomId":{"name":"Laboratorio1","path":"rooms/Laboratorio1/Laboratorio1.yy",},},
     {"roomId":{"name":"Bunker_1","path":"rooms/Bunker_1/Bunker_1.yy",},},
@@ -230,6 +229,7 @@
     {"roomId":{"name":"Bunker_5","path":"rooms/Bunker_5/Bunker_5.yy",},},
     {"roomId":{"name":"ProvaDeFogo","path":"rooms/ProvaDeFogo/ProvaDeFogo.yy",},},
     {"roomId":{"name":"Fase1","path":"rooms/Fase1/Fase1.yy",},},
+    {"roomId":{"name":"testingRoom","path":"rooms/testingRoom/testingRoom.yy",},},
   ],
   "templateType":null,
   "TextureGroups":[

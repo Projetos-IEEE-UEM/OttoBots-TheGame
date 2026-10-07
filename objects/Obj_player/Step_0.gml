@@ -1,457 +1,248 @@
-if(global.pause){  //Se meu jogo está pausado...
-	image_speed = 0; //Parar de attualizar os sprites;
-	exit //Parar de executar o código.
-}
-else{
-	image_speed = 1; //Caso contrário, volte  a atualizar os sprites
-}
+// Pegar os movimentos
+getControls();
 
-//Etapa fica rodando no o codigo toda hr enquanto o objeto existir
+moveDir = (currentState == PlayerState.Dead) ? 0 : rightKey - leftKey;
+if moveDir != 0 { facing = moveDir; }
 
-#region MOVIMENTAÇÃO E COLISAO
+atualizarEstado();
+aplicarParametrosDoEstado();
 
-//So se movimenta enquanto nao estiver levando dano 
-if dano == false && estado!="morto" {
-	// O Otto só pode mudar de direção quando essa variável foi verdadeira.
-	if (mudar_direcao == true){
-		//esquerda (move=-1) e direita (move=0). Os dois apertados juntos (move=0)
-		move = -(keyboard_check(global.esquerda) or gamepad_button_check(0, gp_padl))+(keyboard_check(global.direita) or gamepad_button_check(0, gp_padr))
-		direcao = move;
-	}
-}
-	
-// Bloquear movimentação durante o diálogo
-if (global.dialogo) {
-    xspd = 0;    // Zerar velocidade horizontal
-    move = 0;    // Bloquear input de movimentação
-    image_speed = 0; // Parar animação
-    return;      // Interromper a execução da lógica de movimentação
-}
-	
-//Movimentação horizontal
-xspd = velocidade_movimento*move
-
-//Direção do personagem (se ele esta virado para esquerda ou direita)
-if (move != 0) image_xscale = direcao
-
-//se a tecla S estiver apertada o Otto agaixa
-if (keyboard_check(global.baixo) or gamepad_button_check(0, gp_face3)) {
-	agachar = true
-}
-//Se eu estiver agachado, minha velocidade aumenta
-if agachar {
-	velocidade_movimento = 4;
-} else {
-	//caso contrario, ela volta ao normal
-	velocidade_movimento = 3;
-}
-
-//Se eu estiver agachado e nao estiver me movendo a animcao de movimento das rodas nao acontece 
-if agachar && move == 0 {
-	image_index = 1;
-} else if agachar && move != 0 && place_meeting(x, y+1, Obj_block) {
-	// Atualiza o temporizador de poeira
-	dust_timer -= 1;
-
-	// Verifica se é hora de criar partículas de poeira
-	if (dust_timer <= 0) { 
-	    // Reseta o temporizador
-	    dust_timer = dust_interval;
-
-	    // Calcula a posição da poeira (ajuste conforme necessário)
-	    var dust_x = (x - sprite_width/2) + 3*(direcao);
-	    var dust_y = (y - sprite_height/ 2) + 10; // Altura do chão
-
-	    // Cria a instância do objeto de poeira
-	    instance_create_layer(dust_x, dust_y, layer, Obj_Dust);
-	}
-}
-
-//Se nao tiver nenhum bloco em cima do player e a tecla nao estiver pressionada, ele levanta
-if !place_meeting(x, y-5, Obj_block) && !(keyboard_check(global.baixo) or gamepad_button_check(0, gp_face3)) {
-	agachar = false
-}
-
-//muda a altura do pulo do player quando este esta agachado
-if agachar && (keyboard_check(global.baixo) or gamepad_button_check(0, gp_face3)) {
-	vel_pulo = -5
-} else {
-	vel_pulo = -7
-}
-		
-
-if place_meeting(x, y+1, Obj_block) {
-	pulos = 2
-}
-else{
-	vel_movimento_vertical+=grav
-}
-
-//So consigo pular quando o timer de dano acabar e eu nao estar mais no estado de dano.
-if(dano == false){
-	//funcionamento do pulo
-	if ((keyboard_check_pressed(global.pular) or gamepad_button_check_pressed(0, gp_face1)) && pulos > 0){ //Se o botão de pulo for pressionado e a condição de debounce for cumprida;
-        vel_movimento_vertical = vel_pulo
-		pulos -= 1
-	}
-}
-
-#endregion
-
-// Se a tecla S / Baixo for pressionada, o Otto tenta agachar
-if (keyboard_check(global.baixo) or gamepad_button_check(0, gp_face3)) {
-    agachar = true;
-}
-
-if (agachar) {
-    velocidade_movimento = 4;
-    
-    // FORÇA O JOGO A USAR A MÁSCARA MENOR (Evita expandir para as paredes)
-    // Certifica-te de que criaste esse sprite e a origem dele está em "Bottom Centre"
-    mask_index = spr_colision_player_crouch; 
-    
-} else {
-    // Se não estiver a carregar no botão, precisamos de checar se REALMENTE podemos levantar.
-    // IMPORTANTE: Altera o "-16" para a diferença de altura exata entre o teu player em pé e agachado!
-    var _teto_acima = place_meeting(x, y - 16, Obj_block); 
-    
-    if (!_teto_acima) {
-        agachar = false;
+// Movimenta no eixo X
+if currentState != PlayerState.Dead {
+    if knockbackTimer > 0 {
+        knockbackTimer--;
+        xspd *= 0.92
+    }
+    else {
+        xspd = moveDir * velMove;
         
-        // VOLTA PARA A MÁSCARA NORMAL EM PÉ
-        // Certifica-te de que a origem também está em "Bottom Centre"
-        mask_index = spr_colision_player_idle;
+        // Mecanica do vento
+        var _tempestade = instance_find(Obj_Tempestade, 0);
+            
+        if _tempestade != noone 
+            && _tempestade.tempestade_ativa 
+            && currentState != PlayerState.Crouching {
+                xspd -= _tempestade.forca_tempestade * 0.8; 
+        }
     }
-}
-
-// Se não tiver nenhum bloco em cima e o botão foi solto (e o teto está livre pelo código acima)
-if !agachar {
-    velocidade_movimento = 3;
-}
-
-// Muda a altura do pulo do player quando este está agachado
-if (agachar) {
-    vel_pulo = -5;
-} else {
-    vel_pulo = -7;
-}
-
-
-
-#region MAQUINA DE ESTADOS
-jump = (keyboard_check_pressed(global.pular) or gamepad_button_check_pressed(0, gp_face1))
-
-switch(estado){
-	case "parado":{
-		//comportamento do estado
-		sprite_index = Spr_player
-		
-		//se a tecla S estiver apertada o Otto agaixa
-		if agachar {
-			sprite_index = Spr_player_abaixa
-		}
-		//condicao de movimento 
-		if move != 0 {
-			estado = "movendo";
-		}
-		else if jump {
-			estado = "pulando";
-		}
-		
-		break
-	}
-	case "movendo":{
-		//comportamento
-		sprite_index = Spr_player_walk
-
-		//se a tecla S estiver apertada o Otto agaixa
-		if agachar {
-			sprite_index = Spr_player_abaixa
-		}
-		
-		//condicao de estar parado
-		if move == 0 {
-			estado = "parado";
-		}
-		else if jump {
-			estado = "pulando";
-		}
-		else if vel_movimento_vertical > 0 {
-			estado = "caindo"
-		}
-		
-		break;
-	}
-	case "pulando":{
-		if agachar {
-			sprite_index = Spr_player_abaixa
-		}
-		//comportamento
-		//condiçao para para a animaçao no ar
-		if vel_movimento_vertical < 0 && !(keyboard_check(global.baixo) or gamepad_button_check(0, gp_face3)) {
-			sprite_index = Spr_player_jump;
-			//condiçao para o sprite nao ficar se repetindo e ficar parado no ultimo frame
-			if image_index >= image_number - 1 {
-			image_index = image_number-1;
-			}
-		}
-		else{
-			estado = "caindo"
-		}
-		break
-	}
-	case "caindo" :{
-		
-		//recebe o sprite de queda
-		sprite_index = Spr_player_fall;
-		
-		if agachar {
-			sprite_index = Spr_player_abaixa
-		}
-			
-		//Se eu estou caindo, quer dizer que posso cair na cabeça de um inimigo
-		//criando uma variavel para checar se tem um inimigo abaixo de mim
-		var _inimigo = instance_place(x, y+1, Obj_inimigo_pai);
-			
-		//checando se eu cai em um inimigo, so funciona se eu nao estiver travado de dano
-		if _inimigo && dano == false  {
-			//So consigo pular na cabeça do inimigo se ele nao estiver morto e nao tiver levado dano
-			if _inimigo.morto == false && _inimigo.dano == false {
-				
-				//dando o aviso pro inimigo que ele tomou dano do player 
-				_inimigo.dano = true;
-				//Variavel para checar se eu vou ser lancado na diagonal
-				cabeca_inimigo = true;
-				//eu sou lancado no ar novamente -bouncing-
-				vel_movimento_vertical = vel_pulo+2;
-				estado = "pulando"
-			}  		
-		}
-		//condição de fim de pulo
-		if vel_movimento_vertical == 0 {
-			estado = "parado"
-		}
-		if jump {
-			estado = "pulando"	
-		}
-		
-		break
-	}
-	case "morto":{
-		
-		sprite_index = Spr_player_dead;
-		
-		if image_index >= image_number - 1 {
-			image_alpha -= 0.05;
-		}
-
-		show_debug_message("estou no estado morto");
-		//estado = "parado"
-		
-		break;
-	}
-}
-#endregion
-
-
-
-
-
-
-
-
-#region BOUNCING DIAGONAL NA CABEÇA DOS INIMIGOS
-
-if cabeca_inimigo and Pulo_diagonal == 0 {
-	randomize();
-	Pulo_diagonal = timer_diagonal;
-	if move == 0 {
-		escolha_diagonal = choose(-1,1);
-	}else{
-		escolha_diagonal = move;
-	}
-	if place_meeting(x,y+1, Obj_inimigo3){
-		escolha_diagonal = escolha_diagonal*1.5;
-	}
-}
-
-if cabeca_inimigo and Pulo_diagonal > 0 {
-	Pulo_diagonal--;
-	velocidade_movimento = 0;
-	xspd = 2*escolha_diagonal;
-}
-
-if Pulo_diagonal == 0 or place_meeting(x,y+1, Obj_block) {
-	cabeca_inimigo = false;
-	Pulo_diagonal = 0;
-}
-
-#endregion
-
-
-
-//Quando zerado o tempo levando dano, inicia o tempo de ficar invisivel
-if timer_dano == 0 {
-	//Timer do dano acabou, entao eu nao preciso mais estar levando dano
-	dano = false;
-}
-
-//Quando o tempo de invecibilidade terminar, a imagem do player volta a ficar opaca
-if timer_invencivel > 0 {
-	timer_invencivel--;
-}else{
-	if estado != "morto"{
-		image_alpha = 1;
-	}
-}
-
-
-//Enquanto o tempo do dano ainda nao zerou
-if dano {
-	
-	//sprite muda para o player tomando dano 
-	sprite_index = Spr_player_hit;
-	
-	//So ativa a invencibilidade se eu nao estiver morto e levar dano
-	if estado != "morto" {
-		if timer_dano == 1 {
-			//Inicio da contagem da invecibilidade e player fica menos opaco para indicar que esta invencivel
-			timer_invencivel = tempo_invencivel;
-			image_alpha = 0.5;
-		}
-	}	
-	
-	//diminiu o timer de dano
-	timer_dano--;
-	
-	//isso serve para diminuir a distancia do empurrao que o player levou do inimigo
-	if timer_dano < tempo_dano - 25 {
-		move = 0;
-	}
-	
-	//diminui a quantidade de vidas do Otto quando levar dano de fato
-	if posso_dano {
-		global.vida--;
-		posso_dano = false;
-	}
-	
-	//Quando suas vidas chegarem a zero, seu estado muda para morto
-	if global.vida == 0{
-		estado = "morto"
-		sprite_index = Spr_player_dead;
-	}
-
-}
-
-
-
-
-//Checando se eu encostei num inimigo, projétil ou bloco para tomar dano dele
-var _inimigo = instance_place(x, y, Obj_inimigo_pai);
-var _projetil = instance_place(x,y, Obj_projetil_pai);
-var _bloco_dano = noone;
-_bloco_dano = instance_place(x+direcao,y+1, Obj_block_dano);
-
-if (_bloco_dano == noone) {
-    // Qtd de pixels de distancia em volta do player pra procurar por um bloco de dano
-    var _margem_busca = 1; 
     
-    // Se o vento está a empurrar para a ESQUERDA (xspd < 0 ou o vento vem da direita)
-    if (xspd < 0 or (instance_exists(Obj_Tempestade) && Obj_Tempestade.forca_tempestade > 0)) {
-        _bloco_dano = instance_place(x - _margem_busca, y, Obj_block_dano);
-    } 
-    // Se o vento estivesse a empurrar para a DIREITA
-    else if (xspd > 0) {
-        _bloco_dano = instance_place(x + _margem_busca, y, Obj_block_dano);
+    // Colisões com inimigos, projéteis e blocos de dano
+        // Verifica se embaixo dele tem um inimigo (pulou em cima)
+        if yspd > 0 {
+            var _inimigo = instance_place(x, y+1, Obj_inimigo_pai);
+            if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) {
+                _inimigo.dano = true;
+                playerBounce();
+            }
+        }
+   
+        // Inimigo ao lado: toma dano
+        var _inimigo = instance_place(x + 1, y, Obj_inimigo_pai);
+        if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) {
+            tomarDano();
+        }
+   
+        // Inimigo acima: toma dano, sem quique
+        var _inimigo = instance_place(x, y-1, Obj_inimigo_pai);
+        if instance_exists(_inimigo) && !(_inimigo.morto || _inimigo.dano) {
+            tomarDano(false);
+        }
+       
+        // Projétil atinge o player
+        var _projetilInimigo = instance_place(x, y, Obj_projetil_pai) {
+            if instance_exists(_projetilInimigo) { tomarDano(false) }
+        }
+    
+        // Player rela em um bloco de dano
+        if tocandoBlocoDano() { tomarDano(); }
+
+    // Colide com a parede perfeitamente
+    var _subPixel = 0.5; // Valor de meio pixel para verificar quao longe da parede está
+    if place_meeting(x + xspd, y, Obj_block) {
+        // Encosta precisamente na parede
+        var _pixelCheck = _subPixel * sign(xspd);
+        while !place_meeting(x + _pixelCheck, y, Obj_block) {
+            x += _pixelCheck;
+        }
+        xspd = 0;
     }
-}
-
-//So toma dano qunado nao esta morto
-if estado!="morto"{
-	//Player so toma dano quando a invencibilidade acabar e o inimigo nao estiver morto
-	if timer_invencivel == 0 {
-		if _inimigo && dano == false{
-			if _inimigo.dano == false && _inimigo.morto == false{
-				dano = true;
-				
-				//Aqui eu digo para minha variavel de controle q eu posso levar dano
-				posso_dano = true;
-
-				//inicia o timer de dano
-				timer_dano = tempo_dano;
-
-				//quando o player leva dano, ele eh empurrado para tras na direcao oposta de seu movimento
-				vel_movimento_vertical = -4;
-				move = -move;
-			}
-		}
-		/*Adiocionei aqui a parte do projétil: é basicamente a mesma coisa que acontece quando ele toca em em um
-		inimigo pela lateral, mas de todos os ângulos! ~Bruno*/
-		if _projetil && dano==false//Se eu toco em um projétil e eu não estou invencível:
-		{
-			dano = true; //Eu levo dano.
-				
-			//Aqui eu digo para minha variavel de controle q eu posso levar dano
-			posso_dano = true;
-
-			//inicia o timer de dano
-			timer_dano = tempo_dano;
-
-			//quando o player leva dano, ele eh empurrado para tras na direcao oposta de seu movimento
-			vel_movimento_vertical = -4;
-			move = -move;
-		}
-		if _bloco_dano && dano==false//Se eu toco em um projétil e eu não estou invencível:
-		{
-			dano = true; //Eu levo dano.
-				
-			//Aqui eu digo para minha variavel de controle q eu posso levar dano
-			posso_dano = true;
-
-			//inicia o timer de dano
-			timer_dano = tempo_dano;
-
-			//quando o player leva dano, ele eh empurrado para tras na direcao oposta de seu movimento
-			vel_movimento_vertical = -4;
-			move = -move;
-		}
-	}
-}
-
-
-
-#region Diálogo
-
-if distance_to_object(Obj_par_npcs) <= 10{
-	global.resenha = true;
-	if keyboard_check_pressed(ord("E")) and global.dialogo == false and contador_de_debouncing <= 0{
-		global.dialogo = true;
-		var _npc = instance_nearest(x, y, Obj_par_npcs);
-		var _dialogo = instance_create_layer(x, y, "Controladores", Obj_dialogo);
-		_dialogo.npc_nome = _npc.nome;
-		//global.pause = true;
-	}
-}else{
-	global.resenha = false;
-}
-
-//Decrementador de debauncing
-if contador_de_debouncing > 0 {
-	contador_de_debouncing--;
-}
-#endregion
-
-
-// Mecanica do vento
-
-_inst = Obj_Tempestade;
-
-if(instance_exists(_inst)) {
-    var _tempestade = _inst.tempestade_ativa;
     
-    if (!agachar) {
-        xspd -= _inst.forca_tempestade * 0.8;
+    x += xspd;
+}
+
+// Movimenta no eixo Y
+    // Gravidade
+        // Se o timer do buffer não acabou não aplicar gravidade até ele acabar
+         if bufferQuedaTimer > 0 {
+            bufferQuedaTimer--;
+        }
+        else {
+            // O buffer acabou, aplica a gravidade no player
+            yspd += grav;
+            if yspd > velTerminal { yspd = velTerminal; }
+            setNoChao(false);
+        }
+    
+    // Verifica se o pulo começa no chão
+    if noChao { 
+        qtdPulos = 0;
+        bufferPuloTimer = bufferFramesPulo;
+    }
+    // Se o player está no ar
+    else {
+        // Se o player estiver no ar e não tiver pulado ainda, perde o primeiro pulo
+        bufferPuloTimer--;
+        if qtdPulos == 0 && bufferPuloTimer <= 0 {
+            qtdPulos = 1;
+        }
+    }
+
+    // Descer de plataforma semisólida
+    if crouchKey && jumpKeyPressed && descerPlataforma() {
+        // Consome o pulo, senão ele dispara logo em seguida
+        jumpKeyBuffered = false;
+        jumpKeyBufferedTimer = 0;
+    }
+    
+    // Pula
+    if jumpKeyBuffered && qtdPulos < qtdMaxPulos && currentState != PlayerState.Dead { 
         
-        velocidade_movimento = lerp(4,2,_inst.forca_tempestade);
+        // Reseta o buffer
+        jumpKeyBuffered = false;
+        jumpKeyBufferedTimer = 0;
+        
+        // Aumenta a quantia de pulos realizados
+        qtdPulos++;
+        
+        // noChao = false
+        pulou = true;
+        setNoChao(false);
+        
+        yspd = jumpSpd;
     }
-}
+    
+    // Colide com o teto com precisão
+    var _subPixel = 0.5;
+    if place_meeting(x, y + yspd, Obj_block) {
+        var _pixelCheck = _subPixel * sign(yspd);
+        while !place_meeting(x, y + _pixelCheck, Obj_block) {
+            y += _pixelCheck;
+        }
+        // Colide com o bloco
+        yspd = 0;
+    }
+    
+    
+    // Player colide com o chão
+        // Verifica se o player está em uma plataforma semisolida ou sólida
+        var _clampYspd = max(0, yspd);
+        
+        // Verifica todas as plataformas que o player está colidindo
+            /* Essa lista é uma lista encadeada com as plataformas que colidem com o 
+            player, precisa liberar a memoria dela dps */
+            var _listaPlatColide = ds_list_create(); 
+            
+            // Esse aqui é um array com os diferentes tipos de plataformas que podemos colidir
+            var _arrayPlat = array_create(0);
+            array_push(_arrayPlat, Obj_block, Obj_SemiSolidBlock);
+            
+            // Faz a verificação e coloca na lista _listaPlatColide 
+            var _tamLista = instance_place_list(x, y+1 +_clampYspd + platMovelYspMax, _arrayPlat, _listaPlatColide, false);
+            
+            // Verifica todas as instancias da lista e retorna uma que a parte de cima está abaixo do player
+            for (var i = 0; i < _tamLista; i++) {
+                // Coleta uma instancia de Obj_block ou Obj_SemiSolidBlock da lista
+                var _instLista = _listaPlatColide[| i]; // Forma de pegar o indice em uma lista [| pos]
+                
+                // Evita uma magnetização do chão (o player grudar bruscamente no chão)
+                if ((_instLista.yspd <= yspd || instance_exists(plataformaQueEstou))
+                    && (_instLista.yspd > 0 || place_meeting(x, y+1 + _clampYspd, _instLista))){
+                    // Retorna as instancias de Obj_block ou Obj_SemiSolidBlock
+                    if (_instLista.object_index == Obj_block 
+                        || object_is_ancestor(_instLista.object_index, Obj_block)
+                        || floor(bbox_bottom) <= ceil(_instLista.bbox_top - _instLista.yspd) )  
+                    {
+                        // Retorna a "mais alta"
+                        if (!instance_exists(plataformaQueEstou) ||
+                            _instLista.bbox_top + _instLista.yspd <= plataformaQueEstou.bbox_top + plataformaQueEstou.yspd ||
+                            _instLista.bbox_top + _instLista.yspd <= bbox_bottom) {
+                            plataformaQueEstou = _instLista;
+                        }
+                    }
+                }
+            }
+            // Destroi a lista pra não ter memory leak
+            ds_list_destroy(_listaPlatColide);
+            
+            // Ultima checagem se o chão está nos pés do player
+            if (instance_exists(plataformaQueEstou) && !place_meeting(x, y + platMovelYspMax, plataformaQueEstou)) {
+                plataformaQueEstou = noone;
+            }
+            
+            // Cai na plataforma
+            if (instance_exists(plataformaQueEstou)) {
+                // Colide com o chão precisamente
+                _subPixel = 0.5;
+                while (!place_meeting(x, y+_subPixel, plataformaQueEstou) && 
+                    !place_meeting(x, y, Obj_block)) {
+                        y += _subPixel;
+                    }
+                // Ter certeza que não estamos abaixo da plataforma semisolida
+                if estouSemiSolida() {
+                        while (place_meeting(x, y, plataformaQueEstou)) {y -= _subPixel; }
+                    }
+                // Colocar o y no valor do piso de y
+                y = floor(y);
+                
+                // Colide com o chão
+                yspd = 0;
+                setNoChao(true);
+            }
+    
+    y += yspd;
+
+
+// Parte final da movimentação e da colisão
+    // Snapping no eixo X na plataformaQueEstou se ela está se movendo horizontalmente
+    // Faz com que o player se mova junto com a plataforma no eixo X
+    platMovelXspd = 0;
+    if instance_exists(plataformaQueEstou) { platMovelXspd = plataformaQueEstou.xspd; }
+    
+    // Move com a plataforma
+    if place_meeting(x + platMovelXspd, y, Obj_block) { 
+        var _subPixel = 0.5;
+        var _pixelCheck = _subPixel * sign(platMovelXspd);
+        while !place_meeting(x + _pixelCheck, y, Obj_block) {
+            x += _pixelCheck;
+        }
+        platMovelXspd = 0;
+    }
+    x += platMovelXspd
+    
+    // Snapping no eixo Y na plataformaQueEstou se ela está se movendo verticalmente
+    // Faz com que o player se mova junto com a plataforma no eixo Y
+    if instance_exists(plataformaQueEstou) && (plataformaQueEstou.yspd != 0 
+        || estouSemiSolida(false)) 
+    {
+        if !place_meeting(x, plataformaQueEstou.bbox_top, Obj_block) 
+        && (plataformaQueEstou.bbox_top >= bbox_bottom - platMovelYspMax) 
+        {
+            y = plataformaQueEstou.bbox_top;
+        }
+        
+        // Bater a cabeça em uma parede enquanto está numa plataforma semisolida
+        if plataformaQueEstou.yspd < 0 && place_meeting(x, y + plataformaQueEstou.yspd, Obj_block) {
+            if estouSemiSolida() {
+                // Empurra pra baixo na plataforma semisolida
+                var _subPixel = 0.25;
+                while (place_meeting(x, y + plataformaQueEstou.yspd, Obj_block)) { y += _subPixel; }
+                // Se encontrou uma plataforma sólida enquanto estava empurrando pra baixo, empurra pra cima novamente
+                while (place_meeting(x, y, Obj_block)) { y -= _subPixel; }
+                y = round(y);
+            }
+            setNoChao(false);
+        } 
+    }
+
+
+atualizarSprite();

@@ -49,7 +49,7 @@
     {"name":"Obj_parallax","order":6,"path":"objects/Obj_parallax/Obj_parallax.yy",},
     {"name":"Obj_ParallaxGeral","order":9,"path":"objects/Obj_ParallaxGeral/Obj_ParallaxGeral.yy",},
     {"name":"Obj_pause","order":5,"path":"objects/Obj_pause/Obj_pause.yy",},
-    {"name":"Obj_PlayerTeste","order":1,"path":"objects/Obj_PlayerTeste/Obj_PlayerTeste.yy",},
+    {"name":"Obj_Player","order":1,"path":"objects/Obj_Player/Obj_Player.yy",},
     {"name":"Obj_ProvaDeFogo","order":3,"path":"objects/Obj_ProvaDeFogo/Obj_ProvaDeFogo.yy",},
     {"name":"Obj_resenha","order":3,"path":"objects/Obj_resenha/Obj_resenha.yy",},
     {"name":"Obj_Rubens","order":1,"path":"objects/Obj_Rubens/Obj_Rubens.yy",},
